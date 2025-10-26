@@ -32,7 +32,7 @@ const LoginPage = () => {
       const user = await login(data);
       showSuccess('Đăng nhập thành công');
       if (user.role === 'admin') navigate('/admin/users');
-      else navigate('/profile');
+      else navigate('/');
     } catch (err) {
       showError(err?.response?.data?.message || 'Đăng nhập thất bại');
     }

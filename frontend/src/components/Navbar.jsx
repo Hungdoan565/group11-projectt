@@ -68,23 +68,28 @@ const Navbar = ({ userCount, onAddClick }) => {
 
         <div className="navbar-actions">
           {user ? (
-            // Authenticated: Show user count, add button, and user menu
+            // Authenticated: Show user count, add button (admin only), and user menu
             <>
-              <div className="user-count-badge" aria-live="polite" aria-label={`Tổng số người dùng: ${userCount}`}>
-                <Users size={16} className="user-count-icon" aria-hidden="true" />
-                <span className="user-count-text">
-                  <strong>{userCount}</strong> người dùng
-                </span>
-              </div>
+              {/* Admin-only: User count and Add button */}
+              {user.role === 'admin' && (
+                <>
+                  <div className="user-count-badge" aria-live="polite" aria-label={`Tổng số người dùng: ${userCount}`}>
+                    <Users size={16} className="user-count-icon" aria-hidden="true" />
+                    <span className="user-count-text">
+                      <strong>{userCount}</strong> người dùng
+                    </span>
+                  </div>
 
-              <button
-                className="btn-primary"
-                onClick={onAddClick}
-                aria-label="Thêm người dùng mới"
-              >
-                <Plus size={18} aria-hidden="true" />
-                <span className="btn-text">Thêm người dùng</span>
-              </button>
+                  <button
+                    className="btn-primary"
+                    onClick={onAddClick}
+                    aria-label="Thêm người dùng mới"
+                  >
+                    <Plus size={18} aria-hidden="true" />
+                    <span className="btn-text">Thêm người dùng</span>
+                  </button>
+                </>
+              )}
 
               {/* User Menu Dropdown */}
               <div className="user-menu" ref={dropdownRef}>

@@ -7,7 +7,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 // Routes
 const authRoutes = require("./routes/auth.js");
