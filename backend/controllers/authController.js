@@ -5,8 +5,8 @@ const bcrypt = require("bcryptjs");
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 // Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "7d" });
+const generateToken = (userId, role) => {
+  return jwt.sign({ id: userId, role }, JWT_SECRET, { expiresIn: "7d" });
 };
 
 // Signup
@@ -41,7 +41,7 @@ exports.signup = async (req, res) => {
     });
 
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.status(201).json({
       token,
@@ -79,7 +79,7 @@ exports.login = async (req, res) => {
     }
 
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
 
     res.json({
       token,
