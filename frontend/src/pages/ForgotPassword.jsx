@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Link } from 'react-router-dom';
 import { showError, showSuccess } from '../utils/toast';
-import { forgotPassword } from '../components/services/authService';
+import { forgotPassword } from '../services/authService';
 import AuthLayout from '../components/auth/AuthLayout';
 import AuthCard from '../components/auth/AuthCard';
 import Input from '../components/ui/Input';

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { showError, showSuccess } from '../utils/toast';
 import { useAuth } from '../context/AuthContext';
-import { updateProfile, uploadAvatar, uploadCover } from '../components/services/authService';
+import { updateProfile, uploadAvatar, uploadCover } from '../services/authService';
 import ProfileLayout from '../components/profile/ProfileLayout';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import AvatarUploadModal from '../components/profile/AvatarUploadModal';

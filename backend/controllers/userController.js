@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 exports.getUsers = async (req, res) => {
   try {
@@ -8,6 +9,7 @@ exports.getUsers = async (req, res) => {
       id: u._id.toString(),
       name: u.name,
       email: u.email,
+      role: u.role,
     }));
     res.json(normalized);
   } catch (err) {
@@ -19,14 +21,35 @@ exports.getUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     if (!name || !email) {
       return res.status(400).json({ message: "Name and Email are required" });
     }
-    const user = await User.create({ name, email });
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already in use" });
+    }
+
+    // Use provided password or generate a default one
+    const userPassword = password || "DefaultPassword123!";
+    const hashedPassword = await bcrypt.hash(userPassword, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: "user"
+    });
     res
       .status(201)
-      .json({ id: user._id.toString(), name: user.name, email: user.email });
+      .json({
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role
+      });
   } catch (err) {
     res
       .status(500)
