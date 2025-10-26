@@ -1,0 +1,78 @@
+/* Auth card container */
+.auth-card {
+  background: var(--color-background);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  animation: auth-card-slide-up 0.4s var(--ease-out);
+}
+
+/* Auth card header */
+.auth-card__header {
+  padding: var(--space-8) var(--space-8) var(--space-6);
+  text-align: center;
+}
+
+.auth-card__title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2) 0;
+  line-height: var(--line-height-tight);
+}
+
+.auth-card__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+/* Auth card body */
+.auth-card__body {
+  padding: 0 var(--space-8) var(--space-8);
+}
+
+/* Auth card footer */
+.auth-card__footer {
+  padding: var(--space-6) var(--space-8) var(--space-8);
+  text-align: center;
+  border-top: var(--border-width-1) solid var(--color-border);
+  background: var(--color-gray-50);
+}
+
+/* Slide up animation */
+@keyframes auth-card-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .auth-card__header {
+    padding: var(--space-6) var(--space-6) var(--space-5);
+  }
+
+  .auth-card__title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .auth-card__subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .auth-card__body {
+    padding: 0 var(--space-6) var(--space-6);
+  }
+
+  .auth-card__footer {
+    padding: var(--space-5) var(--space-6) var(--space-6);
+  }
+}
+
