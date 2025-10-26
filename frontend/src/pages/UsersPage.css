@@ -1,3 +1,24 @@
+/* Skip to main content link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--color-primary-600);
+  color: #fff;
+  padding: var(--space-3) var(--space-4);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  border-radius: 0 0 var(--radius-md) 0;
+  z-index: 9999;
+  transition: top var(--duration-base) var(--ease-out);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--color-primary-300);
+  outline-offset: 2px;
+}
+
 .main-content {
   min-height: calc(100vh - var(--navbar-height));
   background: var(--color-gray-50);

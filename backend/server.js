@@ -7,7 +7,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 // Routes
 const authRoutes = require("./routes/auth.js");
@@ -30,7 +30,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err.message));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

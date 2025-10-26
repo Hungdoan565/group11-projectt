@@ -30,6 +30,8 @@
   max-width: 480px;
   width: 100%;
   animation: slideUp var(--duration-base) var(--ease-out);
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes slideUp {

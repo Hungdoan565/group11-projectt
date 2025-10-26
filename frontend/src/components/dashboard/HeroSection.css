@@ -5,6 +5,7 @@
   padding-top: calc(var(--navbar-height) + var(--space-8));
   overflow: hidden;
   margin-bottom: var(--space-8);
+  z-index: 1;
 }
 
 /* Decorative circles */

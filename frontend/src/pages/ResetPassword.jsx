@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { showError, showSuccess } from '../utils/toast';
 import { resetPassword } from '../services/authService';
 import AuthLayout from '../components/auth/AuthLayout';
@@ -12,8 +12,22 @@ import PasswordInput from '../components/auth/PasswordInput';
 import Button from '../components/ui/Button';
 import './ResetPassword.css';
 
-const schema = z.object({
-  token: z.string().min(10, 'Token không hợp lệ'),
+// Schema with token field
+const schemaWithToken = z.object({
+  token: z.string().min(1, 'Token không được để trống'),
+  password: z.string()
+    .min(8, 'Mật khẩu tối thiểu 8 ký tự')
+    .regex(/[a-z]/, 'Phải có chữ thường')
+    .regex(/[A-Z]/, 'Phải có chữ hoa')
+    .regex(/\d/, 'Phải có số'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Mật khẩu không khớp',
+  path: ['confirmPassword'],
+});
+
+// Schema without token field (when token is in URL)
+const schemaWithoutToken = z.object({
   password: z.string()
     .min(8, 'Mật khẩu tối thiểu 8 ký tự')
     .regex(/[a-z]/, 'Phải có chữ thường')
@@ -27,7 +41,13 @@ const schema = z.object({
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
+  const { token: tokenFromUrl } = useParams();
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // Use different schema based on whether token is in URL
+  const hasTokenInUrl = !!tokenFromUrl;
+  const schema = hasTokenInUrl ? schemaWithoutToken : schemaWithToken;
+
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm({
     resolver: zodResolver(schema)
   });
@@ -35,9 +55,11 @@ const ResetPasswordPage = () => {
   const passwordValue = watch('password', '');
   const confirmPasswordValue = watch('confirmPassword', '');
 
-  const onSubmit = async ({ token, password }) => {
+  const onSubmit = async (data) => {
     try {
-      await resetPassword(token, password);
+      // Use token from URL if available, otherwise from form
+      const token = tokenFromUrl || data.token;
+      await resetPassword(token, data.password);
       setIsSuccess(true);
       showSuccess('Đổi mật khẩu thành công');
 
@@ -143,21 +165,17 @@ const ResetPasswordPage = () => {
               </svg>
             </div>
 
-            <div className="reset-password__form-group">
-              <Input
-                label="Reset Token"
-                type="text"
-                placeholder="Nhập token từ email"
-                {...register('token')}
-                state={errors.token ? 'error' : 'default'}
-                error={errors.token?.message}
-                leftIcon={
-                  <svg viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 012 2 1 1 0 102 0 4 4 0 00-4-4z" clipRule="evenodd" />
-                  </svg>
-                }
-              />
-            </div>
+            {/* Show token input only if token is not in URL */}
+            {!hasTokenInUrl && (
+              <div className="reset-password__form-group">
+                <Input
+                  label="Token đặt lại mật khẩu"
+                  placeholder="Nhập token từ email"
+                  {...register('token')}
+                  error={errors.token?.message}
+                />
+              </div>
+            )}
 
             <div className="reset-password__form-group">
               <PasswordInput

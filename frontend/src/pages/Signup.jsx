@@ -48,7 +48,7 @@ const SignupPage = () => {
       const user = await signup(signupData);
       showSuccess('Đăng ký thành công');
       if (user.role === 'admin') navigate('/admin/users');
-      else navigate('/profile');
+      else navigate('/');
     } catch (err) {
       showError(err?.response?.data?.message || 'Đăng ký thất bại');
     }

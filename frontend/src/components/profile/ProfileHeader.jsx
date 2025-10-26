@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Avatar from '../ui/Avatar';
 import Badge from '../ui/Badge';
+import { BASE_URL } from '../../config/api';
 import './ProfileHeader.css';
 
 /**
@@ -19,8 +20,19 @@ const ProfileHeader = ({
   const [isAvatarHovered, setIsAvatarHovered] = useState(false);
   const [isCoverHovered, setIsCoverHovered] = useState(false);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Không rõ';
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Không rõ';
+      return date.toLocaleDateString('vi-VN');
+    } catch (err) {
+      return 'Không rõ';
+    }
+  };
+
   const stats = [
-    { label: 'Ngày tham gia', value: new Date(user?.createdAt).toLocaleDateString('vi-VN') },
+    { label: 'Ngày tham gia', value: formatDate(user?.createdAt) },
     { label: 'Vai trò', value: user?.role === 'admin' ? 'Quản trị viên' : 'Người dùng' },
     { label: 'Trạng thái', value: 'Đang hoạt động' }
   ];
@@ -37,10 +49,10 @@ const ProfileHeader = ({
         tabIndex={0}
         aria-label="Thay đổi ảnh bìa"
       >
-        {user?.coverPhoto && (
-          <img 
-            src={user.coverPhoto} 
-            alt="Cover" 
+        {user?.cover && (
+          <img
+            src={`${BASE_URL}${user.cover}`}
+            alt="Cover"
             className="profile-header__cover-image"
           />
         )}
@@ -68,7 +80,7 @@ const ProfileHeader = ({
             aria-label="Thay đổi avatar"
           >
             <Avatar
-              src={user?.avatar}
+              src={user?.avatar ? `${BASE_URL}${user.avatar}` : null}
               name={user?.name}
               size="2xl"
               status="online"

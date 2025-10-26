@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { showError, showSuccess } from '../utils/toast';
 import { useAuth } from '../context/AuthContext';
-import { updateProfile, uploadAvatar, uploadCover } from '../services/authService';
+import { updateProfile, uploadAvatar, uploadCover, getProfile } from '../services/authService';
 import ProfileLayout from '../components/profile/ProfileLayout';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import AvatarUploadModal from '../components/profile/AvatarUploadModal';
@@ -74,9 +74,9 @@ const ProfilePage = () => {
   const handleAvatarUpload = async (file) => {
     try {
       setUploading(true);
-      const { url } = await uploadAvatar(file);
-      const updated = await updateProfile({ avatar: url });
-      setUser(updated);
+      await uploadAvatar(file);
+      const updatedUser = await getProfile();
+      setUser(updatedUser);
       showSuccess('Cập nhật avatar thành công');
       setIsAvatarModalOpen(false);
     } catch (err) {
@@ -89,9 +89,9 @@ const ProfilePage = () => {
   const handleCoverUpload = async (file) => {
     try {
       setUploading(true);
-      const { url } = await uploadCover(file);
-      const updated = await updateProfile({ coverPhoto: url });
-      setUser(updated);
+      await uploadCover(file);
+      const updatedUser = await getProfile();
+      setUser(updatedUser);
       showSuccess('Cập nhật ảnh bìa thành công');
       setIsCoverModalOpen(false);
     } catch (err) {

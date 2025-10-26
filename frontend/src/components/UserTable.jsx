@@ -44,10 +44,14 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
   };
 
   const handleDelete = async (id, name) => {
-    const confirmed = await showConfirm(`Bạn có chắc muốn xóa người dùng "${name}"?`);
-    if (!confirmed) return;
-
     try {
+      const confirmed = await showConfirm(`Bạn có chắc muốn xóa người dùng "${name}"?`);
+      if (!confirmed) {
+        console.log('User cancelled delete');
+        return;
+      }
+
+      console.log('Deleting user:', id, name);
       await deleteUserApi(id);
       const newUsers = users.filter(user => user.id !== id);
       setUsers(newUsers);
