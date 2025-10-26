@@ -1,0 +1,124 @@
+/* Avatar upload container */
+.avatar-upload {
+  width: 100%;
+}
+
+/* Dropzone */
+.avatar-upload__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-6);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-gray-50);
+  cursor: pointer;
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.avatar-upload__dropzone:hover {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.avatar-upload__dropzone--dragging {
+  border-color: var(--color-primary-500);
+  background: var(--color-primary-100);
+  transform: scale(1.02);
+}
+
+.avatar-upload__icon {
+  width: 64px;
+  height: 64px;
+  color: var(--color-text-tertiary);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.avatar-upload__dropzone:hover .avatar-upload__icon,
+.avatar-upload__dropzone--dragging .avatar-upload__icon {
+  color: var(--color-primary-500);
+}
+
+.avatar-upload__title {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.avatar-upload__subtitle {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+.avatar-upload__hint {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.avatar-upload__input {
+  display: none;
+}
+
+/* Preview */
+.avatar-upload__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.avatar-upload__preview-container {
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 4px solid var(--color-primary-200);
+  box-shadow: var(--shadow-lg);
+}
+
+.avatar-upload__preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-upload__preview-info {
+  text-align: center;
+}
+
+.avatar-upload__preview-name {
+  margin: 0 0 var(--space-1) 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  word-break: break-all;
+}
+
+.avatar-upload__preview-size {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .avatar-upload__dropzone {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .avatar-upload__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .avatar-upload__preview-container {
+    width: 150px;
+    height: 150px;
+  }
+}
+
