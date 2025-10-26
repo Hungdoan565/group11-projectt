@@ -209,4 +209,3 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Reset password failed", error: err.message });
   }
 };
-

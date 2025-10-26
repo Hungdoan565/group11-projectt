@@ -37,4 +37,3 @@ exports.allowSelfOrAdmin = (req, res, next) => {
     res.status(403).json({ message: "Access denied" });
   }
 };
-

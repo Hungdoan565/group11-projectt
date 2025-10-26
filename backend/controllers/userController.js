@@ -56,6 +56,7 @@ exports.createUser = async (req, res) => {
       .json({ message: "Failed to create user", error: err.message });
   }
 };
+
 // PUT /users/:id
 exports.updateUser = async (req, res) => {
   try {

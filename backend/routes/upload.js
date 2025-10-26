@@ -34,4 +34,3 @@ router.post("/upload/avatar", protect, upload.single("avatar"), uploadController
 router.post("/upload/cover", protect, upload.single("cover"), uploadController.uploadCover);
 
 module.exports = router;
-

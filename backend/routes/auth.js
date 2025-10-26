@@ -15,4 +15,3 @@ router.get("/profile", protect, authController.getProfile);
 router.put("/profile", protect, authController.updateProfile);
 
 module.exports = router;
-
