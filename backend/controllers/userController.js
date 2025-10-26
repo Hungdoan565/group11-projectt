@@ -1,37 +1,35 @@
-let users = [
-    { id: 1, name: "Hung", email: "hung@example.com" },
-    { id: 2, name: "Huy", email: "huy@example.com" },
-    { id: 3, name: "Nghia", email: "nghia@example.com" },
-];
-let nextId = 4;
+const User = require("../models/User");
 
-// GET /users
-exports.getUsers = (req, res) => {
-    res.json(users);
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().lean();
+    // Ensure id field exists on lean docs similar to toJSON transform
+    const normalized = users.map((u) => ({
+      id: u._id.toString(),
+      name: u.name,
+      email: u.email,
+    }));
+    res.json(normalized);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed to fetch users", error: err.message });
+  }
 };
 
-// POST /users
-exports.createUser = (req, res) => {
-    const { name, email } = req.body;
+exports.createUser = async (req, res) => {
+  try {
+     const { name, email } = req.body;
     if (!name || !email) {
-        return res.status(400).json({ message: "Name and Email are required" });
+      return res.status(400).json({ message: "Name and Email are required" });
     }
-    const newUser = {
-        id: nextId++,
-        name,
-        email
-    };
-    users.push(newUser);
-    res.status(201).json(newUser);
+    const user = await User.create({ name, email });
+    res
+      .status(201)
+      .json({ id: user._id.toString(), name: user.name, email: user.email });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed to create user", error: err.message });
+  }
 };
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
-
-// Route GET tất cả user
-router.get('/users', userController.getUsers);
-
-// Route POST tạo user mới
-router.post('/users', userController.createUser);
-
-module.exports = router;
