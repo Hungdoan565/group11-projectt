@@ -1,7 +1,5 @@
-const express = require('express');
 const express = require("express");
 const app = express();
-const cors = require('cors');
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: __dirname + "/.env" });
@@ -9,11 +7,15 @@ require("dotenv").config({ path: __dirname + "/.env" });
 // Middlewares
 app.use(cors());
 app.use(express.json());
-const userRoutes = require('./routers/users.js');
-app.use('/api', userRoutes);
 
 // Routes
+const authRoutes = require("./routers/auth.js");
+const profileRoutes = require("./routers/profile.js");
+const uploadRoutes = require("./routers/upload.js");
 const userRoutes = require("./routers/users.js");
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/upload", uploadRoutes);
 app.use("/api", userRoutes);
 
 // DB Connection
