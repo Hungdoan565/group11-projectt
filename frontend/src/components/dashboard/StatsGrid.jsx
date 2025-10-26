@@ -39,7 +39,7 @@ const StatsGrid = ({ users = [] }) => {
         </svg>
       ),
       gradient: 'gradient-1',
-      trend: stats.total > 0 ? { value: '+12%', isPositive: true } : null
+      trend: null
     },
     {
       title: 'Đang hoạt động',
@@ -50,7 +50,7 @@ const StatsGrid = ({ users = [] }) => {
         </svg>
       ),
       gradient: 'gradient-2',
-      trend: stats.active > 0 ? { value: '+8%', isPositive: true } : null
+      trend: null
     },
     {
       title: 'Quản trị viên',
