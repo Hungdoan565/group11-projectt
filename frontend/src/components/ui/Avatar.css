@@ -1,0 +1,159 @@
+/* Avatar container */
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Avatar wrapper */
+.avatar__wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--color-gray-200);
+}
+
+/* Avatar sizes */
+.avatar--xs {
+  width: 24px;
+  height: 24px;
+}
+
+.avatar--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar--md {
+  width: 40px;
+  height: 40px;
+}
+
+.avatar--lg {
+  width: 48px;
+  height: 48px;
+}
+
+.avatar--xl {
+  width: 64px;
+  height: 64px;
+}
+
+.avatar--2xl {
+  width: 96px;
+  height: 96px;
+}
+
+/* Avatar image */
+.avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Avatar fallback */
+.avatar__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-secondary-500) 100%);
+  color: var(--color-text-inverse);
+}
+
+/* Avatar initials */
+.avatar__initials {
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  user-select: none;
+}
+
+.avatar--xs .avatar__initials {
+  font-size: var(--font-size-xs);
+}
+
+.avatar--sm .avatar__initials {
+  font-size: var(--font-size-sm);
+}
+
+.avatar--md .avatar__initials {
+  font-size: var(--font-size-base);
+}
+
+.avatar--lg .avatar__initials {
+  font-size: var(--font-size-lg);
+}
+
+.avatar--xl .avatar__initials {
+  font-size: var(--font-size-2xl);
+}
+
+.avatar--2xl .avatar__initials {
+  font-size: var(--font-size-3xl);
+}
+
+/* Status indicator */
+.avatar__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border: 2px solid var(--color-background);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Status sizes based on avatar size */
+.avatar--xs .avatar__status {
+  width: 6px;
+  height: 6px;
+  border-width: 1px;
+}
+
+.avatar--sm .avatar__status {
+  width: 8px;
+  height: 8px;
+  border-width: 1.5px;
+}
+
+.avatar--md .avatar__status,
+.avatar--lg .avatar__status {
+  width: 10px;
+  height: 10px;
+  border-width: 2px;
+}
+
+.avatar--xl .avatar__status {
+  width: 14px;
+  height: 14px;
+  border-width: 2.5px;
+}
+
+.avatar--2xl .avatar__status {
+  width: 18px;
+  height: 18px;
+  border-width: 3px;
+}
+
+/* Status colors */
+.avatar__status--online {
+  background: var(--color-success-500);
+}
+
+.avatar__status--offline {
+  background: var(--color-gray-400);
+}
+
+.avatar__status--away {
+  background: var(--color-warning-500);
+}
+
+.avatar__status--busy {
+  background: var(--color-error-500);
+}
+

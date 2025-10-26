@@ -1,0 +1,75 @@
+/* Signup form */
+.signup__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.signup__form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Terms checkbox */
+.signup__terms {
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.signup__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  line-height: var(--line-height-normal);
+}
+
+.signup__checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--color-primary-500);
+}
+
+.signup__terms-link {
+  color: var(--color-primary-600);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.signup__terms-link:hover {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+}
+
+/* Footer links */
+.signup__footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.signup__footer-text {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.signup__link {
+  color: var(--color-primary-600);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.signup__link:hover {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+}
+

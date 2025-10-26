@@ -1,0 +1,71 @@
+/* Profile page container */
+.profile {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Profile form */
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
+}
+
+.profile__form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__form-actions {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: var(--border-width-1) solid var(--color-border);
+}
+
+/* Preferences */
+.profile__preferences {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.profile__preferences-text {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/* Activity */
+.profile__activity {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.profile__activity-text {
+  margin: 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile__form {
+    padding: var(--space-5);
+  }
+
+  .profile__form-actions {
+    flex-direction: column;
+  }
+
+  .profile__form-actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile__form {
+    padding: var(--space-4);
+  }
+}
+
