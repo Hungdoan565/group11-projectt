@@ -1,33 +1,21 @@
-const mongoose = require("mongoose");
+const express = require("express");
+const router = express.Router();
+const userController = require("../controllers/userController");
+const { protect, permit, allowSelfOrAdmin } = require("../middlewares/auth");
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-      unique: false,
-      match: /\S+@\S+\.\S+/, // basic email format
-    },
-  },
-  {
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      versionKey: false,
-      transform: (_, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-      },
-    },
-    toObject: { virtuals: true },
-  }
-);
+// All routes below require authentication
+router.use(protect);
 
-module.exports = mongoose.model("User", userSchema);
+// Admin: GET all users
+router.get("/users", permit("admin"), userController.getUsers);
+
+// Admin: create new user
+router.post("/users", permit("admin"), userController.createUser);
+
+// Admin: update user
+router.put("/users/:id", permit("admin"), userController.updateUser);
+
+// Admin or self: delete user
+router.delete("/users/:id", allowSelfOrAdmin, userController.deleteUser);
+
+module.exports = router;
