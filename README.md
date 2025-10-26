@@ -15,6 +15,11 @@ Hệ thống quản lý người dùng cung cấp giao diện trực quan để 
 - Mongoose để kết nối và thao tác với MongoDB
 - dotenv để quản lý biến môi trường
 - CORS để xử lý cross-origin requests
+- JSON Web Token (JWT) cho authentication
+- bcryptjs cho hash password
+- express-validator cho validation
+- multer cho upload files
+- cloudinary cho cloud storage
 
 ### Frontend
 
@@ -33,19 +38,49 @@ Hệ thống quản lý người dùng cung cấp giao diện trực quan để 
 group11-project/
 ├── backend/
 │   ├── server.js
+│   ├── .env
+│   ├── package.json
 │   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── profileController.js
 │   │   └── userController.js
 │   ├── models/
 │   │   └── User.js
-│   └── routers/
-│       └── users.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── profile.js
+│   │   ├── upload.js
+│   │   └── user.js
+│   ├── middlewares/
+│   │   └── auth.js
+│   └── lib/
+│       └── cloudinary.js
 ├── frontend/
 │   ├── public/
+│   ├── package.json
 │   └── src/
 │       ├── App.js
 │       ├── AddUser.jsx
 │       ├── UserList.jsx
-│       └── App.css
+│       ├── components/
+│       │   ├── auth/
+│       │   ├── dashboard/
+│       │   ├── profile/
+│       │   └── ui/
+│       ├── pages/
+│       │   ├── Login.jsx
+│       │   ├── Signup.jsx
+│       │   ├── Profile.jsx
+│       │   └── UsersPage.jsx
+│       ├── services/
+│       │   ├── authService.js
+│       │   └── userService.js
+│       ├── context/
+│       │   └── AuthContext.jsx
+│       ├── config/
+│       │   └── api.js
+│       └── utils/
+│           └── toast.js
 └── README.md
 ```
 
@@ -66,20 +101,50 @@ group11-project/
 cd backend
 ```
 
-2. Cài đặt các thư viện cần thiết:
+2. Khởi tạo package.json (nếu chưa có):
 
 ```
-npm install express mongoose dotenv cors
+npm init -y
 ```
 
-3. Tạo file .env trong thư mục backend và cấu hình:
+3. Cài đặt các thư viện cần thiết:
 
 ```
-MONGODB_URI=<đường_dẫn_mongodb_atlas_của_bạn>
+npm install express mongoose dotenv cors jsonwebtoken bcryptjs express-validator multer cloudinary
+```
+
+Thêm scripts vào package.json:
+
+```json
+{
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  }
+}
+```
+
+4. Tạo file .env trong thư mục backend và cấu hình:
+
+```
 PORT=3000
+MONGODB_URI=<đường_dẫn_mongodb_atlas_của_bạn>
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+JWT_EXPIRES_IN=7d
+
+# Cloudinary Configuration (for avatar upload)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 4. Khởi động server backend:
+
+```
+npm start
+```
+
+Hoặc:
 
 ```
 node server.js
@@ -99,7 +164,12 @@ cd frontend
 
 ```
 npm install
-npm install axios
+```
+
+Hoặc cài đặt thủ công:
+
+```
+npm install react react-dom react-scripts axios @testing-library/jest-dom @testing-library/react @testing-library/user-event web-vitals
 ```
 
 3. Khởi động ứng dụng React:
@@ -112,23 +182,38 @@ npm start
 
 ## Chức năng chính
 
+### Authentication
+
+- Đăng ký tài khoản người dùng mới
+- Đăng nhập/Đăng xuất
+- Quên mật khẩu và reset password
+- JWT token authentication
+
+### Quản lý người dùng
+
 - Hiển thị danh sách người dùng từ database
 - Thêm người dùng mới với validation form
 - Chỉnh sửa thông tin người dùng
 - Xóa người dùng với xác nhận
-- Tự động cập nhật giao diện khi có thay đổi
-- Kiểm tra tính hợp lệ của email và tên
+- Phân quyền admin/user
 
-## API Endpoints
+### Profile Management
 
-- GET /api/users - Lấy danh sách tất cả người dùng
-- POST /api/users - Tạo người dùng mới
-- PUT /api/users/:id - Cập nhật thông tin người dùng
-- DELETE /api/users/:id - Xóa người dùng
+- Cập nhật thông tin cá nhân
+- Upload và quản lý avatar
+- Upload cover photo
+
+### UI/UX
+
+- Giao diện hiện đại, responsive
+- Dark/Light theme support
+- Toast notifications
+- Loading states và skeleton screens
+- Form validation với error handling
 
 ## Phân công công việc
 
-### Đoàn Vĩnh Hưng - Backend Developer
+### Nguyễn Trọng Nghĩa - Backend Developer
 
 - Thiết lập cấu trúc backend với Node.js và Express
 - Xây dựng các API endpoints cho CRUD operations
@@ -136,7 +221,7 @@ npm start
 - Cấu hình routing và middleware
 - Kiểm thử API bằng Postman
 
-### Trần Thanh Huy - Frontend Developer
+### Đoàn Vĩnh Hưng - Frontend Developer
 
 - Thiết kế và phát triển giao diện người dùng với React
 - Xây dựng các component UserList và AddUser
@@ -144,7 +229,7 @@ npm start
 - Xử lý state management và lifecycle
 - Thiết kế responsive và tạo form validation
 
-### Nguyễn Trọng Nghĩa - Database Administrator
+### Trần Thanh Huy - Database Administrator
 
 - Thiết lập MongoDB Atlas cluster
 - Tạo database và collection users
@@ -154,12 +239,17 @@ npm start
 
 ## Lưu ý
 
-- Đảm bảo đã cấu hình đúng MONGODB_URI trong file .env
-- Backend phải chạy trước khi khởi động frontend
-- Kiểm tra console nếu gặp lỗi kết nối
-- Port mặc định backend là 3000, frontend là 3001
+### Yêu cầu trước khi chạy:
 
-## Tác giả
+- Đảm bảo đã cài đặt Node.js phiên bản 14+
+- Tạo tài khoản MongoDB Atlas và lấy connection string
+- Tạo tài khoản Cloudinary để upload hình ảnh
+- Cấu hình đúng tất cả biến môi trường trong file .env
+
+### Thứ tự khởi động:
+
+1. Khởi động backend trước (port 3000)
+2. Sau đó khởi động frontend (port 3001)
 
 Nhóm 11
 
