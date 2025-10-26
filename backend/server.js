@@ -9,6 +9,21 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// Health check route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Group11 Backend API is running!',
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      auth: '/api/auth/*',
+      users: '/api/users',
+      profile: '/api/profile',
+      upload: '/api/upload/*'
+    }
+  });
+});
+
 // Routes
 const authRoutes = require("./routes/auth.js");
 const userRoutes = require("./routes/user.js");
