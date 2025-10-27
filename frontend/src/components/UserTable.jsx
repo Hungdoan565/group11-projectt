@@ -1,59 +1,63 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
-import { showError, showSuccess, showConfirm } from '../utils/toast';
-import TableToolbar from './TableToolbar';
-import SkeletonRow from './SkeletonRow';
-import './UserTable.css';
-import { getUsers, deleteUser as deleteUserApi } from '../services/userService';
+import React, { useEffect, useState, useMemo } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { showError, showSuccess, showConfirm } from "../utils/toast";
+import TableToolbar from "./TableToolbar";
+import SkeletonRow from "./SkeletonRow";
+import "./UserTable.css";
+import { getUsers, deleteUser as deleteUserApi } from "../services/userService";
 
 const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('name-asc');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("name-asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const data = await getUsers();
+        setUsers(data);
+        if (onUserCountChange) {
+          onUserCountChange(data.length);
+        }
+        if (onUsersChange) {
+          onUsersChange(data);
+        }
+      } catch (err) {
+        // Nếu chưa đăng nhập (401), không hiện toast lỗi để UI cũ vẫn hiển thị "Chưa có người dùng"
+        if (err?.response?.status !== 401) {
+          console.error("Lỗi khi lấy danh sách người dùng", err);
+          showError("Không thể tải danh sách người dùng");
+        }
+        setUsers([]);
+        if (onUserCountChange) onUserCountChange(0);
+        if (onUsersChange) onUsersChange([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const data = await getUsers();
-      setUsers(data);
-      if (onUserCountChange) {
-        onUserCountChange(data.length);
-      }
-      if (onUsersChange) {
-        onUsersChange(data);
-      }
-    } catch (err) {
-      // Nếu chưa đăng nhập (401), không hiện toast lỗi để UI cũ vẫn hiển thị "Chưa có người dùng"
-      if (err?.response?.status !== 401) {
-        console.error('Lỗi khi lấy danh sách người dùng', err);
-        showError('Không thể tải danh sách người dùng');
-      }
-      setUsers([]);
-      if (onUserCountChange) onUserCountChange(0);
-      if (onUsersChange) onUsersChange([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchUsers();
+    // intentionally empty deps: run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDelete = async (id, name) => {
     try {
-      const confirmed = await showConfirm(`Bạn có chắc muốn xóa người dùng "${name}"?`);
+      const confirmed = await showConfirm(
+        `Bạn có chắc muốn xóa người dùng "${name}"?`
+      );
       if (!confirmed) {
-        console.log('User cancelled delete');
+        console.log("User cancelled delete");
         return;
       }
 
-      console.log('Deleting user:', id, name);
+      console.log("Deleting user:", id, name);
       await deleteUserApi(id);
-      const newUsers = users.filter(user => user.id !== id);
+      const newUsers = users.filter((user) => user.id !== id);
       setUsers(newUsers);
       if (onUserCountChange) {
         onUserCountChange(newUsers.length);
@@ -63,16 +67,16 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
       }
       showSuccess(`Đã xóa người dùng "${name}"`);
     } catch (err) {
-      console.error('Lỗi khi xóa người dùng', err);
-      showError('Không thể xóa người dùng');
+      console.error("Lỗi khi xóa người dùng", err);
+      showError("Không thể xóa người dùng");
     }
   };
 
   const getInitials = (name) => {
     return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -84,26 +88,27 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
     // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(user =>
-        user.name.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query)
+      result = result.filter(
+        (user) =>
+          user.name.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
       );
     }
 
     // Sort
     result.sort((a, b) => {
       switch (sortBy) {
-        case 'name-asc':
+        case "name-asc":
           return a.name.localeCompare(b.name);
-        case 'name-desc':
+        case "name-desc":
           return b.name.localeCompare(a.name);
-        case 'email-asc':
+        case "email-asc":
           return a.email.localeCompare(b.email);
-        case 'email-desc':
+        case "email-desc":
           return b.email.localeCompare(a.email);
-        case 'date-desc':
+        case "date-desc":
           return b.id.localeCompare(a.id); // Assuming ID correlates with creation time
-        case 'date-asc':
+        case "date-asc":
           return a.id.localeCompare(b.id);
         default:
           return 0;
@@ -182,7 +187,7 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
           <p className="empty-state-text">
             Không có người dùng nào phù hợp với từ khóa "{searchQuery}"
           </p>
-          <button className="btn-secondary" onClick={() => setSearchQuery('')}>
+          <button className="btn-secondary" onClick={() => setSearchQuery("")}>
             Xóa tìm kiếm
           </button>
         </div>
@@ -218,7 +223,7 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
         onPageChange={setCurrentPage}
         totalPages={totalPages}
       />
-      
+
       <div className="table-wrapper">
         <table className="user-table" role="table">
           <thead>
@@ -266,7 +271,7 @@ const UserTable = ({ onEditUser, onUserCountChange, onUsersChange }) => {
           </tbody>
         </table>
       </div>
-      
+
       <div className="table-footer">
         <div className="footer-info">
           <span className="footer-text">
